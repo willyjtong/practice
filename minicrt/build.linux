@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# build c libraries
+gcc -m32 -c -ggdb -fno-builtin -nostdlib -fno-stack-protector entry.c malloc.c stdio.c string.c printf.c atexit.c
+
+# build cpp libraries
+g++ -m32 -c -nostdinc++ -fno-rtti -fno-exceptions -fno-builtin -nostdlib -fno-stack-protector crtbegin.cc crtend.cc ctors.cc new_delete.cc sysdep.cc iostream.cc
+
+# build crt libraries
+ar -rs minicrt.a malloc.o stdio.o string.o printf.o ctors.o atexit.o iostream.o new_delete.o sysdep.o
+
+# build testing case for c
+gcc -m32 -c -ggdb -fno-builtin -nostdlib -fno-stack-protector test.c
+
+ld -m elf_i386 -static -e mini_crt_entry entry.o test.o minicrt.a -o test
+
+# build testing case for cpp
+gcc -m32 -c -ggdb -nostdinc++ -fno-rtti -fno-exceptions -fno-builtin -nostdlib -fno-stack-protector testcpp.cc
+
+ld -m elf_i386 -e mini_crt_entry entry.o crtbegin.o testcpp.o minicrt.a crtend.o -o testcpp

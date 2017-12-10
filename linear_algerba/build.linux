@@ -1,0 +1,3 @@
+ g++ -g --std=c++11 -I eigen-3.3.4/Eigen/ arithmetic.cc -o arithmetic
+ g++ -g --std=c++11 -I eigen-3.3.4/Eigen/ lu.cc -o lu
+ g++ -g --std=c++11 -I eigen-3.3.4/Eigen/ test_lu_decomp.cc lu_decomp.cc -o lu_decomp
